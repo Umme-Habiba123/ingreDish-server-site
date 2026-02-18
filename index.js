@@ -87,11 +87,13 @@ async function run() {
     });
 
 // add gallery images----
-app.post("api/gallery", async(res,req)=>{
-  const newItem = req.body
-  const result=await galleryCollection.insertOne(newItem)
-  res.send(result)
-})
+// Example
+app.post("/api/gallery", async (req, res) => {
+  const newItem = req.body;
+  const result = await galleryCollection.insertOne(newItem);
+  res.send(result);
+});
+
 
 
 
