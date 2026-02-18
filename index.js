@@ -8,28 +8,27 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 app.use(cors());
 app.use(express.json());
 
-//simple-eCommerce
-//oZ1LK2wej8CSDz68
 
 require("dotenv").config();
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@flash0.nw85ito.mongodb.net/?appName=Flash0`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jbcozto.mongodb.net/?appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
-    deprecationErrors: true ,
+    deprecationErrors: true,
   },
 });
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7 )
+    // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
     const db = client.db("ingridish-db");
-    const ingridishCollections = db.collection("ingridish") ;
+    const ingridishCollections = db.collection("ingridish");
+    const galleryCollection=db.collection("galleryImage")
 
     // Get all products
     app.get("/api/products", async (req, res) => {
@@ -80,6 +79,22 @@ async function run() {
         .toArray();
       res.send(result);
     });
+
+    // get all gallery image-----
+     app.get("/api/gallery", async (req, res) => {
+      const products = await galleryCollection.find().toArray();
+      res.send(products);
+    });
+
+// add gallery images----
+app.post("api/gallery", async(res,req)=>{
+  const newItem = req.body
+  const result=await galleryCollection.insertOne(newItem)
+  res.send(result)
+})
+
+
+
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
